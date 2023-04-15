@@ -6,6 +6,6 @@ const backendApi: AxiosInstance = axios.create({
 })
 
 export async function signUpApi(user: UserType) {
-    const res: AxiosResponse<any, any> = await backendApi.post('/signup', user);
+    const res: AxiosResponse<any, any> = await backendApi.post('/auth/signup', user);
     return res;
   }

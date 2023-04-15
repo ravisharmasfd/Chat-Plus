@@ -8,7 +8,7 @@ function SignUp() {
   const [user, setUser] = useState<UserType>({
     name: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -16,20 +16,23 @@ function SignUp() {
   const handleSignUp = async(event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      const { name, email, phoneNumber, password, confirmPassword } = user;
+      setLoading(true)
+      const { name, email, phone, password, confirmPassword } = user;
       if(password !== confirmPassword){
         alert("Password Not Match");
         return
       }
       const response = await signUpApi(user);
+      console.log(response)
       if(response.status == 200){
         alert("Your account is created successfully");
-        setLoading(false);
         navigation('signin')
       }
-    } catch (error) {
-      alert('there is some error')
+      setLoading(false);
+    } catch (error:any) {
+      console.log(error)
       setLoading(false)
+      if(error.response.status==401)alert("User already exist")
     }
   };
   const handleForm = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +47,7 @@ function SignUp() {
       <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
         <div>
           <a href="/">
-            <h3 className="text-4xl font-bold text-purple-600">Logo</h3>
+            <h3 className="text-4xl font-bold text-purple-600">Chat Plus</h3>
           </a>
         </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
@@ -62,6 +65,10 @@ function SignUp() {
                   name="name"
                   value={user.name}
                   onChange={handleForm}
+                  required
+                  minLength={3}
+                  maxLength={20}
+                  placeholder="Full Name"
                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
@@ -79,13 +86,17 @@ function SignUp() {
                   name="email"
                   value={user.email}
                   onChange={handleForm}
+                  placeholder="example@example.com"
+                  required
+                  minLength={3}
+                  maxLength={40}
                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
             </div>
             <div className="mt-4">
               <label
-                htmlFor="phoneNumber"
+                htmlFor="phone"
                 className="block text-sm font-medium text-gray-700 undefined"
               >
                 Phone Number
@@ -93,9 +104,13 @@ function SignUp() {
               <div className="flex flex-col items-start">
                 <input
                   type="tel"
-                  name="phoneNumber"
-                  value={user.phoneNumber}
+                  name="phone"
+                  value={user.phone}
                   onChange={handleForm}
+                  placeholder="xxxxxxxxxx"
+                  required
+                  minLength={10}
+                  maxLength={10}
                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
@@ -113,6 +128,10 @@ function SignUp() {
                   name="password"
                   value={user.password}
                   onChange={handleForm}
+                  placeholder="password"
+                  required
+                  minLength={8}
+                  maxLength={20}
                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
@@ -130,6 +149,10 @@ function SignUp() {
                   name="confirmPassword"
                   value={user.confirmPassword}
                   onChange={handleForm}
+                  placeholder="password"
+                  required
+                  minLength={8}
+                  maxLength={20}
                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>

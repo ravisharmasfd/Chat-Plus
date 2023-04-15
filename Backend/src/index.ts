@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api',router);
 (async () => {
-    await sequelize.sync({force:true});
+    await sequelize.sync();
     app.listen(port,()=>{
         console.log(`Server running at ${port} port`);
     })

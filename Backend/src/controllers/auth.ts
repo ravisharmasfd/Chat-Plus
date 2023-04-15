@@ -1,6 +1,7 @@
 import {User, UserAttributes} from "../models/User"
 import { Request,Response } from "express";
 import bcrypt from 'bcrypt'
+import { Op } from "sequelize";
 const saltRounds = 10;
 export const signUpController =async (req:Request,res:Response) => {
     try {
@@ -9,10 +10,15 @@ export const signUpController =async (req:Request,res:Response) => {
         if (!email || !password || !name || !phone) {
           res.status(400).json({ message: "Check your credential" });
         }
-        const FindUser = await User.findOne({ where: { email } });
+        const FindUser = await User.findOne({ where: {
+          [Op.or]:[
+            { email: email },
+            { phone: phone }
+          ]
+        } });
     
         if (FindUser) {
-          res.status(401).json({ message: "Email already exists" });
+          res.status(401).json({ message: "User already exists" });
         } else {
           const salt = bcrypt.genSaltSync(saltRounds);
           const hash = bcrypt.hashSync(password, salt);
