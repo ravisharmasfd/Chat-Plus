@@ -1,33 +1,25 @@
 import React, { useState } from "react";
-import { UserType } from "../Types";
+import { UserLogin } from "../Types";
 import { InfinitySpin } from "react-loader-spinner";
 import { NavigateFunction, useNavigate } from "react-router";
-import { signUpApi } from "../Api";
-function SignUp() {
+import { signInApi } from "../Api";
+
+function SignIn() {
   const navigation: NavigateFunction  = useNavigate();
-  const [user, setUser] = useState<UserType>({
-    name: "",
+  const [user, setUser] = useState<UserLogin>({
     email: "",
-    phone: "",
     password: "",
-    confirmPassword: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
-  const handleSignUp = async(event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignIn = async(event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
       setLoading(true)
-      const {password, confirmPassword } = user;
-      if(password !== confirmPassword){
-        alert("Password Not Match");
-        return
-      }
-      await signUpApi(user);
-      navigation('signin')
-    } catch (error) {
-      
+      const {email,  password,  } = user;
+      const data = await signInApi(user) 
+    } catch (error:any) {
     }finally{
-      setLoading(false)
+        setLoading(false)
     }
   };
   const handleForm = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,28 +38,7 @@ function SignUp() {
           </a>
         </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
-          <form onSubmit={handleSignUp}>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 undefined"
-              >
-                Name
-              </label>
-              <div className="flex flex-col items-start">
-                <input
-                  type="text"
-                  name="name"
-                  value={user.name}
-                  onChange={handleForm}
-                  required
-                  minLength={3}
-                  maxLength={20}
-                  placeholder="Full Name"
-                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-            </div>
+          <form onSubmit={handleSignIn}>
             <div className="mt-4">
               <label
                 htmlFor="email"
@@ -85,27 +56,6 @@ function SignUp() {
                   required
                   minLength={3}
                   maxLength={40}
-                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-            </div>
-            <div className="mt-4">
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 undefined"
-              >
-                Phone Number
-              </label>
-              <div className="flex flex-col items-start">
-                <input
-                  type="tel"
-                  name="phone"
-                  value={user.phone}
-                  onChange={handleForm}
-                  placeholder="xxxxxxxxxx"
-                  required
-                  minLength={10}
-                  maxLength={10}
                   className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
@@ -131,33 +81,12 @@ function SignUp() {
                 />
               </div>
             </div>
-            <div className="mt-4">
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 undefined"
-              >
-                Confirm Password
-              </label>
-              <div className="flex flex-col items-start">
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={user.confirmPassword}
-                  onChange={handleForm}
-                  placeholder="password"
-                  required
-                  minLength={8}
-                  maxLength={20}
-                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-            </div>
             <div className="flex items-center justify-end mt-4">
               <a
                 className="text-sm text-gray-600 underline hover:text-gray-900"
-                href="/signin"
+                href="/signup"
               >
-                Already registered?
+                Don't have a account?
               </a>
               {loading ? (
                 <InfinitySpin width="200" color="#4fa94d" />
@@ -166,7 +95,7 @@ function SignUp() {
                   type="submit"
                   className="inline-flex items-center px-4 py-2 ml-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-900 border border-transparent rounded-md active:bg-gray-900 false"
                 >
-                  Sign Up
+                  Sign In
                 </button>
               )}
             </div>
@@ -177,4 +106,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignIn;

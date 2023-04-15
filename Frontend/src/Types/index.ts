@@ -1,7 +1,10 @@
-export interface UserType {
-    email : string;
+
+export interface UserLogin{
+        email : string;
+        password : string;
+}
+export interface UserType extends UserLogin {
     name  : string;
     phone : string;
-    password ?: string;
-    confirmPassword ?: string;
+    confirmPassword : string;
 }
