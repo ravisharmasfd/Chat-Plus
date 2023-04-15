@@ -1,6 +1,7 @@
 export interface UserType {
     email : string;
     name  : string;
-    phoneNumber : number;
+    phoneNumber : string;
     password ?: string;
+    confirmPassword ?: string;
 }
