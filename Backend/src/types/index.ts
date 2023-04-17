@@ -4,7 +4,7 @@ import { Model } from "sequelize"
 export interface jwtPayload{
     userId:number
 }
-export interface reqUser extends Request{
+export interface ReqUser extends Request{
     user: UserAttributes
 }
 export type MiddlewareFunction = (req: Request, res: Response, next: NextFunction) => Promise<void>

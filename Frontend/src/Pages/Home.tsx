@@ -1,30 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navbar } from '../Components/Navbar'
+import Chat from '../Components/chat';
 function Home() {
   
 const [messages,setMessages] = useState<string[]>([])
 const [message,setMessage] = useState<string>("")
-  return (
-    <div className='bg-gray-50 min-h-screen min-w-screen'>
-      <Navbar/>
-      <div className='mx-auto'>
-        <input
-        type='text'
-        onChange={(e)=>{
-          setMessage(e.target.value)
-        }}
-        placeholder='Enter a message'
-        value={message}
-        ></input>
-        <button onClick={()=>{
-          setMessages(messages.concat(message))
-          setMessage("")
-          }}>Add message</button>
-      </div>
-      {messages.map((msg)=>{
-        return<p>{msg}</p>
-      })}
+const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 768);
 
+  useEffect(() => {
+    function handleResize() {
+      setIsWideScreen(window.innerWidth > 768);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  return (
+    <div className=' min-h-full min-w-full flex flex-row relative'>
+      <div className='w-full h-full absolute md:w-1/3 giveStatic '><Chat/></div>
+      <div className='bg-blue-500 z-10 w-full h-full absolute md:w-2/3 md:block giveStatic'>chat</div>
     </div>
    
   )
