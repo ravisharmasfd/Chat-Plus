@@ -3,10 +3,10 @@ import { User, UserAttributes } from "../models/User";
 import { jwtSecret } from "../config/env";
 import jwt from "jsonwebtoken";
 import { Model } from "sequelize";
-import { jwtPayload, reqUser } from "../types";
+import { jwtPayload, ReqUser } from "../types";
 
 
-export const authMiddleware = async (req:reqUser, res:Response, next:NextFunction) => {
+export const authMiddleware = async (req:ReqUser, res:Response, next:NextFunction) => {
   try {
     const { authorization } = req.headers;
     if (authorization) {
