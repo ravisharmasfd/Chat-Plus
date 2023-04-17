@@ -23,7 +23,7 @@ function SignUp() {
         return
       }
       await signUpApi(user);
-      navigation('signin')
+      navigation('/signin')
     } catch (error) {
       
     }finally{

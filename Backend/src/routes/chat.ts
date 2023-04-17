@@ -1,11 +1,10 @@
 import express, { Router } from "express";
-import userRouter from './user'
-import authRouter from './auth'
-import { addMessage, createChat } from "../controllers/chat";
-import { authMiddleware } from "../middleware/auth";
+import { addMessage, createChat, getAllChats, getMessages } from "../controllers/chat";
 const router: Router = express.Router();
 
-router.post('/chat/:id',authMiddleware, createChat)
-router.post("/message",authMiddleware,addMessage)
+router.post('/', createChat as any)
+router.post("/message" ,addMessage as any)
+router.get('/' , getAllChats as any)
+router.get("/message/:chatId", getMessages as any)
 
 export default router

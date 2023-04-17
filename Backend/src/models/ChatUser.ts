@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import sequelize from "../database";
 
 interface ChatUsersAttributes {
@@ -14,7 +14,7 @@ const ChatUsers = sequelize.define<Model<ChatUsersAttributes, ChatUsersAttribute
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "User",
+        model: "users",
         key: "id",
       },
     },
@@ -22,7 +22,7 @@ const ChatUsers = sequelize.define<Model<ChatUsersAttributes, ChatUsersAttribute
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Chat",
+        model: "chats",
         key: "id",
       },
     },
