@@ -3,6 +3,8 @@ import { UserLogin } from "../Types";
 import { InfinitySpin } from "react-loader-spinner";
 import { NavigateFunction, useNavigate } from "react-router";
 import { signInApi } from "../Api";
+import { useDispatch } from "react-redux";
+import { signIn } from "../Store/authSlice";
 
 function SignIn() {
   const navigation: NavigateFunction  = useNavigate();
@@ -11,12 +13,13 @@ function SignIn() {
     password: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const handleSignIn = async(event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
       setLoading(true)
-      const {email,  password,  } = user;
-      const data = await signInApi(user) 
+      const data = await signInApi(user)
+      dispatch(signIn(data.user));      
     } catch (error:any) {
     }finally{
         setLoading(false)

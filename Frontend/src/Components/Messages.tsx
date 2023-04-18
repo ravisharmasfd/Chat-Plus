@@ -39,6 +39,7 @@ function Messages({ selectedChat, setSelectedChat }: Props) {
     } catch (error) {
     } finally {
       setLoadingGetMessages(false);
+      // setTimeout(getMessages,2200)
     }
   }
   useEffect(() => {

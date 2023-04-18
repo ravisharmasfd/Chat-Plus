@@ -3,9 +3,12 @@ import ChatTabs from "./ChatTabs";
 import ChatButton from "./ChatButton";
 import { Dialog } from "@headlessui/react";
 import AddChat from "./AddChat";
-import { ChatType } from "../Types";
+import { ChatType, StateType } from "../Types";
 import { getChats } from "../Api";
 import { TailSpin } from "react-loader-spinner";
+import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
+import { redirect, useNavigate } from "react-router";
 interface Props{
   setSelectedChat: React.Dispatch<React.SetStateAction<ChatType | null>>
 }
@@ -13,22 +16,31 @@ function Chat({setSelectedChat}:Props) {
   const [modal, setModal] = useState<boolean>(false);
   const [chats, setChats] = useState<ChatType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const user = useSelector<StateType>((state)=>state.auth.user)
+  const navigate = useNavigate()
   async function fetchChats() {
     try {
       setLoading(true);
-      setError(false);
+      const token = Cookies.get('token')
+      console.log(token);
       const chats = await getChats();
-      setChats(chats);
+      if(chats) setChats(chats);
       setLoading(false);
     } catch (error) {
-      setError(true);
       setLoading(false);
+      navigate("/");
+      
+      
+
     }
   }
   useEffect(() => {
-    fetchChats();
-  }, []);
+    if(user){
+      fetchChats();
+    }else{
+      navigate("/")
+    }
+  }, [user]);
   return (
     <div className="w-full h-full flex flex-col items-center justify-start relative px-4 py-8">
       <ChatTabs />

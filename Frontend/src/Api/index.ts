@@ -99,7 +99,7 @@ export async function getChats() {
     const response: AxiosResponse<any, any> = await authApi.get("/chat");
     return response.data;
   } catch (error: any) {
-    alert("This is some problem")
+    throw error
   }
 }
 export async function addMessageApi(text:string,chatId:number) {

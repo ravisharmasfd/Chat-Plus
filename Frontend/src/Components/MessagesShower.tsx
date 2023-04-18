@@ -10,14 +10,13 @@ function MessagesShower({ messages }: Props) {
   const msgDivRef : any = useRef(null);
   const user  = useSelector<StateType>((state) => state.auth.user) as UserType;
   useEffect(() => {
-    msgDivRef?.current?.scrollIntoView({ behavior: "smooth" });
+    msgDivRef.current.scrollTop = msgDivRef.current.scrollHeight;
   }, [messages])
   
   return (
-    <div className='w-full h-full flex flex-col justify-start p-4 overflow-y-auto' >
+    <div className='w-full h-full flex flex-col justify-start p-4 overflow-y-auto' ref={msgDivRef} >
       {messages.map((message, index) => (
         <div
-        ref={msgDivRef}
           key={index}
           className={`rounded-lg p-4 mb-4 max-w-60 ${
             message.userId == user.id ? 'bg-purple-800 text-white self-end text-right' : 'bg-purple-500 text-white self-start text-left'

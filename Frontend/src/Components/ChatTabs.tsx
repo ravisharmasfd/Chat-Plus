@@ -1,6 +1,18 @@
+import Cookies from "js-cookie";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { signOut } from "../Store/authSlice";
 
 function ChatTabs() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+
+  const logoutFunc = () => {
+    Cookies.remove("token");
+    dispatch(signOut())
+    navigate("/signin");
+  }
   return (
     <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
       <ul className="flex -mb-px">
@@ -31,12 +43,12 @@ function ChatTabs() {
           </a>
         </li>
         <li className="mr-1">
-          <a
-            href="#"
+          <button
             className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+            onClick={logoutFunc}
           >
             Logout
-          </a>
+          </button>
         </li>
       </ul>
     </div>

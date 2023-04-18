@@ -14,7 +14,7 @@ const userSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        signOut: (state, action) => {
+        signOut: () => {
             return {
                 signIn: false,
                 user: null

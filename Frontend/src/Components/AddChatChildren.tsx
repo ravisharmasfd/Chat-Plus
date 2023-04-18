@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createChatWithEmail, createChatWithPhone } from '../Api';
+import { redirect } from 'react-router';
 interface props{
     setModal:React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -24,8 +25,10 @@ export default function AddCHatChildren({setModal}:props) {
     try {
         if (activeTab === 'email') {
             const data = await createChatWithEmail(emailValue);
+            redirect("/")
           } else {
             const data = await createChatWithPhone(phoneValue);
+            redirect("/")
           }
     } catch (error) {
     }

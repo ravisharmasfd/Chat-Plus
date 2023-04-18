@@ -60,6 +60,7 @@ export const signInController = async (req: Request, res: Response) => {
               email: FindUser.email,
               id: FindUser.id,
               name: FindUser.name,
+              phone: FindUser.phone,
             },
           });
       } else {
