@@ -12,7 +12,7 @@ interface Props {
   setSelectedChat: React.Dispatch<React.SetStateAction<ChatType | null>>;
 }
 function Messages({ selectedChat, setSelectedChat }: Props) {
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [Messages, setMessages] = useState<MessageType[]>([]);
   const [loadingGetMessages, setLoadingGetMessages] = useState<boolean>(false);
   const {socket} = useContext(SocketContext)
   async function addMessage(text: string, name: string, userId?: number) {
@@ -22,7 +22,7 @@ function Messages({ selectedChat, setSelectedChat }: Props) {
         const now = new Date();
         socket.emit("sendMessage",{ chatId:selectedChat.chatId,userId,text,name,createdAt: now.toISOString() })
         setMessages([
-          ...messages,
+          ...Messages,
           {
             text,
             userId,
@@ -37,8 +37,8 @@ function Messages({ selectedChat, setSelectedChat }: Props) {
   async function getMessages() {
     try {
       setLoadingGetMessages(true);
-      const messages = await getMessagesApi(selectedChat?.chatId);
-      setMessages(messages);
+      const m = await getMessagesApi(selectedChat?.chatId);
+      setMessages(m);
     } catch (error) {
     } finally {
       setLoadingGetMessages(false);
@@ -49,10 +49,10 @@ function Messages({ selectedChat, setSelectedChat }: Props) {
     if(selectedChat){
       getMessages();
       socket.on("newMessage",(data)=>{
-        setMessages([...messages,data])
+        setMessages([...Messages,data])
       })
     }
-    console.log(messages)
+    console.log(Messages)
   }, [selectedChat]);
 
   return (
@@ -73,7 +73,7 @@ function Messages({ selectedChat, setSelectedChat }: Props) {
           visible={true}
         />
       ) : (
-        <MessagesShower messages={messages} />
+        <MessagesShower messages={Messages} />
       )}
       <AddMessage addMessage={addMessage} />
     </div>

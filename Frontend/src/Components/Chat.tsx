@@ -75,7 +75,7 @@ function Chat({ setSelectedChat }: Props) {
           />
         ) : (
           chats.map((chat) => {
-            const online = activeUser.includes(chat.userId);
+            const online = !chat.group && activeUser.includes(chat.userId);
             return (
               <button
                 onClick={() => {
@@ -85,7 +85,7 @@ function Chat({ setSelectedChat }: Props) {
                 key={chat.chatId}
               >
                 {chat.name}
-                {online && <span className="text-green-500 text-sm">Online</span>}
+                {online && <span className="text-green-400 text-sm">Online</span>}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
