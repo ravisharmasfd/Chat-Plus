@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getGroupInfoByChatId } from "../Api";
+import { getGroupInfoByChatId, removeMember } from "../Api";
 import { ChatType, StateType, UserType } from "../Types";
 import { useSelector } from "react-redux";
 import AddMember from "./Addmember";
@@ -17,14 +17,15 @@ function GroupDetails({ setModal }: Props) {
   const selectedChat = useSelector<StateType>(
     (state) => state.selectChat.chat
   ) as ChatType;
-  const handleAddMember = () => {
-    // Add a new member to the members array
-    // setMembers([...members, { id: 'new-member-id', name: 'New Member' }]);
-  };
 
-  const handleRemoveMember = (userId: number) => {
-    // Remove a member from the members array
-    // setMembers(members.filter(member => member.id !== memberId));
+  const handleRemoveMember = async (userId: number) => {
+    try {
+      await removeMember(userId, selectedChat.chatId);
+      const updatedMembers = members.filter((member) => {
+        return member.userId !== userId;
+      });
+      setMembers(updatedMembers);
+    } catch (error) {}
   };
 
   async function fetchMember() {
@@ -34,12 +35,11 @@ function GroupDetails({ setModal }: Props) {
       console.log(data);
     } catch (error) {}
   }
-  useEffect(() => {
-    fetchMember();
-  }, []);
+
   useEffect(() => {
     if (selectedChat.group == 0) setModal(false);
-    console.log("is admin",user.id,selectedChat.admin)
+    console.log("is admin", user.id, selectedChat.admin);
+    fetchMember();
   }, [selectedChat]);
   return (
     <div className="p-4 border h-full w-full rounded-lg z-40 flex flex-col">
@@ -69,14 +69,20 @@ function GroupDetails({ setModal }: Props) {
       </div>
 
       {user.id == selectedChat.admin && (
-        <AddMember/>
+        <AddMember setMembers={setMembers} members={members} />
       )}
 
-      <div className="list-disc pl-4">
+      <div className=" p-4 flex flex-col items-center justify-start space-4 w-full h-full overflow-y-auto">
         {members.map((member) => (
-          <div key={member.userId} className="mb-2">
-            {member.name}
-            {member.userId != user.id && (
+          <div
+            key={member.userId}
+            className="flex-row justify-between w-full items-center bg-purple-100 hover:bg-purple-200 rounded-2xl min-w-4-5 p-4 my-4"
+          >
+            {member.name}{" "}
+            <span className="font-bold ">
+              {member.userId == selectedChat.admin ? "Admin" : ""}
+            </span>
+            {member.userId != user.id && selectedChat.admin == user.id && (
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
                 onClick={() => handleRemoveMember(member.userId)}

@@ -155,7 +155,7 @@ export async function getGroupInfoByChatId(chatId: number) {
 export async function addMemberByEmail(email: string, chatId: number) {
   try {
     const response: AxiosResponse<any, any> = await authApi.post(
-      "/chat/member" + chatId.toString(),
+      "/chat/member/" + chatId.toString(),
       { email }
     );
     return response.data;
@@ -166,10 +166,18 @@ export async function addMemberByEmail(email: string, chatId: number) {
 export async function addMemberByPhone(phone: string, chatId: number) {
   try {
     const response: AxiosResponse<any, any> = await authApi.post(
-      "/chat/member" + chatId.toString(),
+      "/chat/member/" + chatId.toString(),
       { phone }
     );
     return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+}
+export async function removeMember(userId: number, chatId: number) {
+  try {
+    await authApi.post("/chat/remove/" + chatId.toString(),{userId});
+    return
   } catch (error: any) {
     throw error;
   }

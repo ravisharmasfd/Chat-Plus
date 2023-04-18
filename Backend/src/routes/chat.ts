@@ -3,7 +3,7 @@ import { addMember, addMessage, createChat, createGroup, getAllChats, getGroup, 
 const router: Router = express.Router();
 
 router.post("/member/:id",addMember as any)
-router.delete("/member/:id",removeMember as any)
+router.post("/remove/:id",removeMember as any)
 router.post("/group",createGroup as any);
 router.get("/group/:id", getGroup as any)
 router.post("/message" ,addMessage as any)

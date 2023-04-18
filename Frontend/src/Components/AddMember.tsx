@@ -3,10 +3,16 @@ import { addMemberByEmail, addMemberByPhone, createChatWithEmail, createChatWith
 import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import { ChatType, StateType } from '../Types';
-// interface props{
-    
-// }
-export default function AddMember() {
+interface MemberType {
+    chatId: number;
+    userId: number;
+    name: string;
+  }
+interface Props{
+    setMembers: React.Dispatch<React.SetStateAction<MemberType[]>>
+    members:MemberType[]
+}
+export default function AddMember({setMembers,members}:Props) {
   const [activeTab, setActiveTab] = useState<string>('email');
   const [emailValue, setEmailValue] = useState<string>('');
   const [phoneValue, setPhoneValue] = useState<string>('');
@@ -29,8 +35,10 @@ export default function AddMember() {
     try {
         if (activeTab === 'email') {
             const data = await addMemberByEmail(emailValue,selectedChat.chatId);
+            setMembers([...members,data])
           } else if(activeTab === 'phone'){
             const data = await addMemberByPhone(phoneValue,selectedChat.chatId)
+            setMembers([...members,data])
           }
     } catch (error) {
     }

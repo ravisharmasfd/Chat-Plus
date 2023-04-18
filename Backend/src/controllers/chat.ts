@@ -218,7 +218,7 @@ export const addMember = async (req: ReqUser, res: Response) => {
     }
     const newMember = await ChatUsers.create({chatId:group.chatId,userId:person.id});
 
-    res.json(newMember);
+    res.json({chatId:cId,userId:person.id,name:person.name});
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
