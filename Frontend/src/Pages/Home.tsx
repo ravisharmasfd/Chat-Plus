@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { ChatType } from '../Types';
 import Chat from '../Components/Chat';
-
 import { Transition } from '@headlessui/react';
 import Messages from '../Components/Messages';
 function Home() {
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 768);
   const [selectedChat, setSelectedChat] = useState<ChatType|null>(null);
-
+  function handleResize() {
+    setIsWideScreen(window.innerWidth > 768);
+  }
   useEffect(() => {
-    function handleResize() {
-      setIsWideScreen(window.innerWidth > 768);
-    }
-
+    
     window.addEventListener('resize', handleResize);
 
     return () => {

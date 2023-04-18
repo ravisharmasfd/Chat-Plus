@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { ChatType, MessageType } from "../Types";
 import MessagesHeader from "./MessagesHeader";
 import AddMessage from "./AddMessage";
@@ -6,6 +6,7 @@ import { useState } from "react";
 import MessagesShower from "./MessagesShower";
 import { addMessageApi, getMessagesApi } from "../Api";
 import { TailSpin } from "react-loader-spinner";
+import { SocketContext } from "../App";
 interface Props {
   selectedChat: ChatType | null;
   setSelectedChat: React.Dispatch<React.SetStateAction<ChatType | null>>;
@@ -13,11 +14,13 @@ interface Props {
 function Messages({ selectedChat, setSelectedChat }: Props) {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [loadingGetMessages, setLoadingGetMessages] = useState<boolean>(false);
+  const {socket} = useContext(SocketContext)
   async function addMessage(text: string, name: string, userId?: number) {
     try {
       if (selectedChat) {
         const message = await addMessageApi(text, selectedChat.chatId);
         const now = new Date();
+        socket.emit("sendMessage",{ chatId:selectedChat.chatId,userId,text,name,createdAt: now.toISOString() })
         setMessages([
           ...messages,
           {
@@ -43,7 +46,13 @@ function Messages({ selectedChat, setSelectedChat }: Props) {
     }
   }
   useEffect(() => {
-    getMessages();
+    if(selectedChat){
+      getMessages();
+      socket.on("newMessage",(data)=>{
+        setMessages([...messages,data])
+      })
+    }
+    console.log(messages)
   }, [selectedChat]);
 
   return (

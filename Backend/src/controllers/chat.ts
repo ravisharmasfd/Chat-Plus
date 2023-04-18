@@ -108,16 +108,21 @@ export const getAllChats = async (req: ReqUser, res: Response) => {
 export const addMessage = async (req: ReqUser, res: Response) => {
   try {
     const { chatId, text } = req.body;
+    const cId = parseInt(chatId);
+    if(isNaN(cId)){
+      res.status(404).json("not alllowed");
+      return
+    }
     console.log("BOdy", req.body);
     const userChat = ChatUsers.findAll({
-      where: { chatId, userId: req.user.id },
+      where: { chatId:cId, userId: req.user.id },
     });
     if (!userChat) {
       res.status(404).json({ Message: "you can't message" });
       return;
     }
     const msg = await Message.create({
-      chatId: Number(chatId),
+      chatId: cId,
       userId: req.user.id as number,
       text,
     });
@@ -129,13 +134,18 @@ export const addMessage = async (req: ReqUser, res: Response) => {
 export const getMessages = async (req: ReqUser, res: Response) => {
   try {
     const { chatId } = req.params;
+    const cId = parseInt(chatId);
+    if(isNaN(cId)){
+      res.status(404).json("not alllowed");
+      return
+    }
     const chatUser = await ChatUsers.findOne({
-      where: { chatId: parseInt(chatId), userId: req.user.id },
+      where: { chatId: cId, userId: req.user.id },
     });
     if (!chatUser) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const cId = parseInt(chatId);
+    
     const messages = await sequelize.query(
       "SELECT t.text,t.chatId,t.userId,t.createdAt,users.name FROM (SELECT * FROM messages where chatId=:cId) AS t INNER JOIN users ON t.userId = users.id ",
       {

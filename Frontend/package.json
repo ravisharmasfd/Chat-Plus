@@ -22,9 +22,11 @@
     "react-loader-spinner": "^5.3.4",
     "react-redux": "^8.0.5",
     "react-router": "^6.10.0",
-    "react-router-dom": "^6.10.0"
+    "react-router-dom": "^6.10.0",
+    "socket.io-client": "^4.6.1"
   },
   "devDependencies": {
+    "@types/node": "^18.15.11",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
