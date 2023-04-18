@@ -13,8 +13,12 @@ export interface AuthType{
     user:UserType,
     signIn:boolean
 }
+export interface StateChatType{
+    chat:ChatType
+} 
 export interface StateType{
-    auth: AuthType
+    auth: AuthType;
+    selectChat:StateChatType;
 }
 export interface ChatType{
     chatId:number;
@@ -23,6 +27,7 @@ export interface ChatType{
     phone:string;
     userId:number;
     group:number;
+    admin?:number
 }
 export interface MessageType{
     chatId:number;

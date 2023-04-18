@@ -1,16 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserType } from "../Types";
 
-interface stateType{
-    user: UserType | null;
-    signIn: boolean;
-} 
 const initialState = {
    user : null,
    signIn : false,
 }
 
-const userSlice = createSlice({
+const userSlice:any = createSlice({
     name: "auth",
     initialState,
     reducers: {

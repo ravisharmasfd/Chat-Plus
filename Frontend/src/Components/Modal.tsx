@@ -1,16 +1,16 @@
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import AddCHatChildren from './AddChatChildren';
 interface props{
     modal:boolean;
     setModal:React.Dispatch<React.SetStateAction<boolean>>
+    children: React.ReactNode;
 }
-function AddChat({modal,setModal}:props) {
+function Modal({modal,setModal,children}:props) {
     return (
         <Transition show={modal} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-10 overflow-y-auto"
+        className="fixed inset-0 z-30 overflow-y-auto"
         onClose={setModal}
       >
         <div className="min-h-screen px-4 text-center">
@@ -37,7 +37,7 @@ function AddChat({modal,setModal}:props) {
           >
             <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
               
-              <AddCHatChildren setModal={setModal}/>
+              {children}
             </div>
           </Transition.Child>
         </div>
@@ -46,4 +46,4 @@ function AddChat({modal,setModal}:props) {
       )
     }
 
-export default AddChat
+export default Modal

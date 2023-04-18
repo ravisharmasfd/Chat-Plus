@@ -67,31 +67,39 @@ export async function getUser() {
       case 401:
         alert("You are not authorize");
     }
-    throw error
+    throw error;
   }
 }
-export async function createChatWithEmail(email:string) {
+export async function createChatWithEmail(email: string) {
   try {
-    const response: AxiosResponse<any, any> = await authApi.post("/chat",{email});
+    const response: AxiosResponse<any, any> = await authApi.post("/chat", {
+      email,
+    });
     return response.data;
   } catch (error: any) {
     switch (error.response.status) {
-      case 404:alert("User with this detail not found");
-      default: alert("There is some problem");
+      case 404:
+        alert("User with this detail not found");
+      default:
+        alert("There is some problem");
     }
-    throw error
+    throw error;
   }
 }
-export async function createChatWithPhone(phone:string) {
+export async function createChatWithPhone(phone: string) {
   try {
-    const response: AxiosResponse<any, any> = await authApi.post("/chat",{phone});
+    const response: AxiosResponse<any, any> = await authApi.post("/chat", {
+      phone,
+    });
     return response.data;
   } catch (error: any) {
     switch (error.response.status) {
-      case 404:alert("User with this detail not found");
-      default: alert("There is some problem");
+      case 404:
+        alert("User with this detail not found");
+      default:
+        alert("There is some problem");
     }
-    throw error
+    throw error;
   }
 }
 export async function getChats() {
@@ -99,22 +107,70 @@ export async function getChats() {
     const response: AxiosResponse<any, any> = await authApi.get("/chat");
     return response.data;
   } catch (error: any) {
-    throw error
+    throw error;
   }
 }
-export async function addMessageApi(text:string,chatId:number) {
+export async function addMessageApi(text: string, chatId: number) {
   try {
-    const response: AxiosResponse<any, any> = await authApi.post("/chat/message",{chatId,text});
+    const response: AxiosResponse<any, any> = await authApi.post(
+      "/chat/message",
+      { chatId, text }
+    );
     return response.data;
   } catch (error: any) {
-    alert("This is some problem while sending message")
+    throw error;
   }
 }
-export async function getMessagesApi(chatId:any) {
+export async function getMessagesApi(chatId: any) {
   try {
-    const response: AxiosResponse<any, any> = await authApi.get("/chat/message/"+chatId?.toString());
+    const response: AxiosResponse<any, any> = await authApi.get(
+      "/chat/message/" + chatId?.toString()
+    );
     return response.data;
   } catch (error: any) {
-    alert("This is some problem while getting message")
+    throw error;
+  }
+}
+export async function createGroupApi(name: string) {
+  try {
+    const response: AxiosResponse<any, any> = await authApi.post(
+      "/chat/group/",
+      { name }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+}
+export async function getGroupInfoByChatId(chatId: number) {
+  try {
+    const response: AxiosResponse<any, any> = await authApi.get(
+      "/chat/group/"+chatId.toString()
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+}
+export async function addMemberByEmail(email: string, chatId: number) {
+  try {
+    const response: AxiosResponse<any, any> = await authApi.post(
+      "/chat/member" + chatId.toString(),
+      { email }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error;
+  }
+}
+export async function addMemberByPhone(phone: string, chatId: number) {
+  try {
+    const response: AxiosResponse<any, any> = await authApi.post(
+      "/chat/member" + chatId.toString(),
+      { phone }
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error;
   }
 }

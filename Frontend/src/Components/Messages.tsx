@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { ChatType, MessageType } from "../Types";
+import { ChatType, MessageType, StateType } from "../Types";
 import MessagesHeader from "./MessagesHeader";
 import AddMessage from "./AddMessage";
 import { useState } from "react";
@@ -7,14 +7,16 @@ import MessagesShower from "./MessagesShower";
 import { addMessageApi, getMessagesApi } from "../Api";
 import { TailSpin } from "react-loader-spinner";
 import { SocketContext } from "../App";
-interface Props {
-  selectedChat: ChatType | null;
-  setSelectedChat: React.Dispatch<React.SetStateAction<ChatType | null>>;
-}
-function Messages({ selectedChat, setSelectedChat }: Props) {
+import { useSelector } from "react-redux";
+import GroupDetails from "./GroupDetail";
+import Modal from "./Modal";
+
+function Messages() {
+  const [modal, setModal] = useState<boolean>(false);
   const [Messages, setMessages] = useState<MessageType[]>([]);
   const [loadingGetMessages, setLoadingGetMessages] = useState<boolean>(false);
   const {socket} = useContext(SocketContext)
+  const selectedChat = useSelector<StateType>(state=>state.selectChat.chat) as ChatType;
   async function addMessage(text: string, name: string, userId?: number) {
     try {
       if (selectedChat) {
@@ -54,12 +56,13 @@ function Messages({ selectedChat, setSelectedChat }: Props) {
     }
     console.log(Messages)
   }, [selectedChat]);
-
+if(modal){
+  return <GroupDetails setModal={setModal}></GroupDetails>
+}
   return (
     <div className="w-full h-full flex flex-col items-center justify-between relative px-4 py-8">
       <MessagesHeader
-        selectedChat={selectedChat}
-        setSelectedChat={setSelectedChat}
+      setModal={setModal}
       />
       {loadingGetMessages ? (
         <TailSpin
