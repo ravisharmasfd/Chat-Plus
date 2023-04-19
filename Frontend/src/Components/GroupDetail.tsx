@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getGroupInfoByChatId, removeMember } from "../Api";
 import { ChatType, StateType, UserType } from "../Types";
 import { useSelector } from "react-redux";
-import AddMember from "./Addmember";
+import AddMember from "./AddMember";
 interface MemberType {
   chatId: number;
   userId: number;
@@ -32,13 +32,11 @@ function GroupDetails({ setModal }: Props) {
     try {
       const data = await getGroupInfoByChatId(selectedChat.chatId);
       setMembers(data.members);
-      console.log(data);
     } catch (error) {}
   }
 
   useEffect(() => {
     if (selectedChat.group == 0) setModal(false);
-    console.log("is admin", user.id, selectedChat.admin);
     fetchMember();
   }, [selectedChat]);
   return (

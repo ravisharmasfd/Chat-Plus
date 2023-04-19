@@ -18,11 +18,16 @@ function AddMessage({ addMessage }: Props) {
     <div className="bottom-5 bg-purple-100 p-4 w-full rounded-xl">
       <form
         onSubmit={async (e) => {
+         try {
           e.preventDefault();
           setLoading(true);
           await addMessage(text, user.name, user.id);
+          console.log(text,user.name,user.email,user.id)
           setText("");
           setLoading(false);
+         } catch (error) {
+          
+         }
         }}
         className="flex justify-between items-center p-2"
       >

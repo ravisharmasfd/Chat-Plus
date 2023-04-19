@@ -9,22 +9,30 @@ import { TailSpin } from "react-loader-spinner";
 import { SocketContext } from "../App";
 import { useSelector } from "react-redux";
 import GroupDetails from "./GroupDetail";
-import Modal from "./Modal";
 
 function Messages() {
   const [modal, setModal] = useState<boolean>(false);
-  const [Messages, setMessages] = useState<MessageType[]>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [soketMsg, setSocketMsg] = useState<MessageType|null>(null)
   const [loadingGetMessages, setLoadingGetMessages] = useState<boolean>(false);
-  const {socket} = useContext(SocketContext)
-  const selectedChat = useSelector<StateType>(state=>state.selectChat.chat) as ChatType;
+  const { socket } = useContext(SocketContext);
+  const selectedChat = useSelector<StateType>(
+    (state) => state.selectChat.chat
+  ) as ChatType;
   async function addMessage(text: string, name: string, userId?: number) {
     try {
       if (selectedChat) {
         const message = await addMessageApi(text, selectedChat.chatId);
         const now = new Date();
-        socket.emit("sendMessage",{ chatId:selectedChat.chatId,userId,text,name,createdAt: now.toISOString() })
+        socket.emit("sendMessage", {
+          chatId: selectedChat.chatId,
+          userId,
+          text,
+          name,
+          createdAt: now.toISOString(),
+        });
         setMessages([
-          ...Messages,
+          ...messages,
           {
             text,
             userId,
@@ -44,26 +52,29 @@ function Messages() {
     } catch (error) {
     } finally {
       setLoadingGetMessages(false);
-      // setTimeout(getMessages,2200)
     }
   }
   useEffect(() => {
-    if(selectedChat){
+    if (selectedChat) {
       getMessages();
-      socket.on("newMessage",(data)=>{
-        setMessages([...Messages,data])
-      })
     }
-    console.log(Messages)
   }, [selectedChat]);
-if(modal){
-  return <GroupDetails setModal={setModal}></GroupDetails>
-}
+  useEffect(()=>{
+    socket.on("newMessage", (data) => {
+      setSocketMsg(data);
+    });
+  },[])
+  useEffect(()=>{
+    if(soketMsg){
+      setMessages([...messages,soketMsg]);
+    }
+  },[soketMsg])
+  if (modal) {
+    return <GroupDetails setModal={setModal}></GroupDetails>;
+  }
   return (
     <div className="w-full h-full flex flex-col items-center justify-between relative px-4 py-8">
-      <MessagesHeader
-      setModal={setModal}
-      />
+      <MessagesHeader setModal={setModal} />
       {loadingGetMessages ? (
         <TailSpin
           height="80"
@@ -76,7 +87,7 @@ if(modal){
           visible={true}
         />
       ) : (
-        <MessagesShower messages={Messages} />
+        <MessagesShower messages={messages} />
       )}
       <AddMessage addMessage={addMessage} />
     </div>

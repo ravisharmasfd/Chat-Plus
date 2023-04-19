@@ -15,19 +15,14 @@ function Home() {
     if(user && user.id){
       socket.emit('addNewUser',user.id);
     }
-    socket.on("getUser",(data:any)=>{
-      console.log('try getUser')
-      console.log(data)
-    })
-    socket.on("connect",()=>{console.log("connected successfully")})
     return ()=>{
       socket.disconnect();
     }
   },[user])
   return (
     <div className=' w-full h-full overflow-hidden flex flex-row relative'>
-      <div className='w-full h-full bg-gray-50 absolute md:w-1/4 giveStatic '><Chat/></div>
-      <Transition className=" w-full h-full bg-gray-50 z-20 absolute md:w-3/4 md:block giveStatic"
+      <div className='w-full h-full bg-gray-50 absolute md:w-1/3 giveStatic '><Chat/></div>
+      <Transition className=" w-full h-full bg-gray-50 z-20 absolute md:w-2/3 md:block giveStatic"
         show={(selectedChat)?true:false}
         enter="transition ease-in-out duration-300 transform"
         enterFrom="translate-x-full"

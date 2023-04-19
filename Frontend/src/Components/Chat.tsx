@@ -27,7 +27,6 @@ function Chat() {
     try {
       setLoading(true);
       const chats = await getChats() as ChatType[];
-      console.log(chats)
       let personChat:ChatType[] =[];
       let groupChat:ChatType[] =[];
       if (chats){
