@@ -148,7 +148,6 @@ export const getAllChats = async (req: ReqUser, res: Response) => {
     );
     res.json(result.concat(groupResult));
   } catch (err) {
-    console.error(err);
     res.status(500).send("Server Error");
   }
 };
@@ -174,7 +173,6 @@ export const getGroup = async (req: ReqUser, res: Response) => {
 
     res.json({groupInfo,members});
   } catch (err) {
-    console.error(err);
     res.status(500).send("Server Error");
   }
 };
@@ -220,7 +218,6 @@ export const addMember = async (req: ReqUser, res: Response) => {
 
     res.json({chatId:cId,userId:person.id,name:person.name});
   } catch (err) {
-    console.error(err);
     res.status(500).send("Server Error");
   }
 };
@@ -260,7 +257,6 @@ export const removeMember = async (req: ReqUser, res: Response) => {
     }
     res.json({Message:"removed successfully"});
   } catch (err) {
-    console.error(err);
     res.status(500).send("Server Error");
   }
 };
@@ -273,7 +269,6 @@ export const addMessage = async (req: ReqUser, res: Response) => {
       res.status(404).json("not alllowed");
       return
     }
-    console.log("BOdy", req.body);
     const userChat = ChatUsers.findAll({
       where: { chatId:cId, userId: req.user.id },
     });
@@ -316,7 +311,6 @@ export const getMessages = async (req: ReqUser, res: Response) => {
     );
     res.status(200).json(messages);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error });
   }
 };

@@ -6,7 +6,10 @@ interface MessageAttributes {
   text: string;
   userId: number;
   chatId: number;
+  image?: string;
+  video?: string;
 }
+
 
 const Message = sequelize.define<Model<MessageAttributes, MessageAttributes>>(
   "Message",
@@ -30,6 +33,12 @@ const Message = sequelize.define<Model<MessageAttributes, MessageAttributes>>(
         model: "chats",
         key: "id",
       },
+    },
+    image: {
+      type: DataTypes.STRING,
+    },
+    video: {
+      type: DataTypes.STRING,
     },
   },
   {

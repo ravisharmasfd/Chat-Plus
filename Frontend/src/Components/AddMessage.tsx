@@ -22,7 +22,6 @@ function AddMessage({ addMessage }: Props) {
           e.preventDefault();
           setLoading(true);
           await addMessage(text, user.name, user.id);
-          console.log(text,user.name,user.email,user.id)
           setText("");
           setLoading(false);
          } catch (error) {

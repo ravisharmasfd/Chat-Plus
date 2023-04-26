@@ -31,11 +31,7 @@ app.use('/api',router);
     let activeUsers: ActiveUsersType[] = [];
   
    io.on("connection", (socket) => {
-    console.log("A user connected",
-    socket.id);
-    io.to(socket.id).emit("connected");
     socket.on("addNewUser", (newUserId:number) => {
-      console.log("addNewUser is called",socket.id)
       if (!activeUsers.some((user) => user.id === newUserId)) {
         activeUsers.push({id:newUserId,socketId:socket.id});
         io.emit("getUser", activeUsers.map((u:ActiveUsersType)=>{
@@ -49,13 +45,11 @@ app.use('/api',router);
       io.emit("getUser", activeUsers.map((u:ActiveUsersType)=>{
         return u.id
       }));
-      console.log("disconnected",socket.id)
     });
   
     socket.on("sendMessage", async(data) => {
       try {
         const { chatId,userId } = data;
-        console.log(data)
       const userWithChatId = await ChatUsers.findAll({where:{chatId,userId:{
         [Op.not]:userId
       }}}) as ChatUsersAttributes[];
