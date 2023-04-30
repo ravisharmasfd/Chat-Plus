@@ -24,10 +24,13 @@ export async function signUpApi(user: UserType) {
     switch (error.response.status) {
       case 400:
         alert("Check your credential");
+        break;
       case 401:
         alert("User already present with this detail");
+        break;
       case 500:
         alert("Server Error");
+        break;
       default:
         alert("There is some problem");
     }
@@ -40,18 +43,21 @@ export async function signInApi(user: UserLogin) {
       user
     );
     Cookies.set("token", response.data.token, { expires: 10 });
-    alert("Sign In successfully");
     return response.data;
   } catch (error: any) {
     switch (error.response.status) {
       case 400:
         alert("Check your credential");
+        break;
       case 401:
         alert("Check your password");
+        break;
       case 404:
         alert("User not found");
+        break;
       case 500:
         alert("Server Error");
+        break;
       default:
         alert("There is some problem");
     }
@@ -66,6 +72,7 @@ export async function getUser() {
     switch (error.response.status) {
       case 401:
         alert("You are not authorize");
+        break;
     }
     throw error;
   }
@@ -80,6 +87,7 @@ export async function createChatWithEmail(email: string) {
     switch (error.response.status) {
       case 404:
         alert("User with this detail not found");
+        break;
       default:
         alert("There is some problem");
     }
@@ -96,6 +104,7 @@ export async function createChatWithPhone(phone: string) {
     switch (error.response.status) {
       case 404:
         alert("User with this detail not found");
+        break;
       default:
         alert("There is some problem");
     }
