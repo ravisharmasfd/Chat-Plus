@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { StateType, UserType } from "../Types";
 import { TailSpin } from "react-loader-spinner";
-import InputEmoji from "react-input-emoji";
+import { BsEmojiSmile } from "react-icons/bs";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+
+// import "emoji-mart/css/emoji-mart.css";
 interface Props {
   addMessage: AddMessageFn;
 }
@@ -14,26 +18,31 @@ type AddMessageFn = (
 function AddMessage({ addMessage }: Props) {
   const user = useSelector<StateType>((state) => state.auth.user) as UserType;
   const [text, setText] = useState<string>("");
+  const [showEmojis, setShowEmojis] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-         try {
-          e.preventDefault();
-          setLoading(true);
-          await addMessage(text, user.name, user.id);
-          setText("");
-          setLoading(false);
-         } catch (error) {
-          
-         }
-        }
+    try {
+      e.preventDefault();
+      setLoading(true);
+      if (text.length > 0) await addMessage(text, user.name, user.id);
+      setText("");
+      setShowEmojis(false)
+      setLoading(false);
+
+    } catch (error) {}
+  };
+  const addEmoji = (e: any) => {
+    setText(text + e.native);
+  };
+
   return (
-    <div className="bottom-5 bg-purple-100 p-4 w-full rounded-xl">
+    <div className="bottom-5 bg-purple-100 p-4 w-full rounded-xl flex flex-col gap-2 justify-between">
       <form
         onSubmit={handleSubmit}
         className="flex justify-between items-center p-2"
       >
-        <div className="flex-1">
-          {/* <input
+        <div className="flex flex-row w-full min-w-[50%] bg-white items-center justify-between rounded-lg">
+          <input onFocus={()=>{setShowEmojis(false)}}
             type="text"
             value={text}
             onChange={(e) => {
@@ -41,15 +50,20 @@ function AddMessage({ addMessage }: Props) {
             }}
             placeholder="New message here..."
             className="w-full rounded-full p-2 focus:outline-none"
-          /> */}
-          <InputEmoji
-      value={text}
-      onChange={setText}
-      cleanOnEnter
-      onEnter={handleSubmit}
-      placeholder="Type a message"
-    />
+          />
+          <div
+          onClick={(e) =>{
+            e.stopPropagation();
+            setShowEmojis(!showEmojis)
+          } }
+          className="mx-1  text-black hover:text-purple-800 font-bold text-xl"
+        >
+          <BsEmojiSmile />
         </div>
+        </div>
+  
+        
+
         <div className="flex items-center space-x-2">
           {loading ? (
             <TailSpin
@@ -63,7 +77,7 @@ function AddMessage({ addMessage }: Props) {
               visible={true}
             />
           ) : (
-            <button
+               <button
               type="submit"
               className="bg-purple-600 text-white rounded-full px-4 py-2 hover:bg-purple-800 focus:outline-none"
             >
@@ -72,6 +86,11 @@ function AddMessage({ addMessage }: Props) {
           )}
         </div>
       </form>
+      {showEmojis && (
+          <div className="absolute  right-4 bottom-32 emojiMart">
+            <Picker className="h-[40%]" perLine="6" emojiSize="16"emojiVersion='14' previewPosition="none"  data={data} onEmojiSelect={addEmoji} />
+          </div>
+        )}
     </div>
   );
 }

@@ -8,3 +8,6 @@
         position:static;
     }
 }
+em-emoji-picker {
+    height: 250px !important;
+  }
