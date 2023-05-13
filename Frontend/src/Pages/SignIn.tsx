@@ -5,6 +5,7 @@ import { NavigateFunction, useNavigate } from "react-router";
 import { signInApi } from "../Api";
 import { useDispatch } from "react-redux";
 import { signIn } from "../Store/authSlice";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   const navigation: NavigateFunction  = useNavigate();
@@ -36,9 +37,9 @@ function SignIn() {
     <div>
       <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
         <div>
-          <a href="/">
+          <Link to="/">
             <h3 className="text-4xl font-bold text-purple-600">Chat Plus</h3>
-          </a>
+          </Link>
         </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
           <form onSubmit={handleSignIn}>
@@ -85,12 +86,12 @@ function SignIn() {
               </div>
             </div>
             <div className="flex items-center justify-end mt-4">
-              <a
+              <Link
                 className="text-sm text-gray-600 underline hover:text-gray-900"
-                href="/signup"
+                to="/signup"
               >
                 Don't have a account?
-              </a>
+              </Link>
               {loading ? (
                 <InfinitySpin width="200" color="#4fa94d" />
               ) : (

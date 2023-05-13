@@ -1,14 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { UserLogin, UserType } from "../Types";
 import Cookies from "js-cookie";
-const token = Cookies.get("token");
 const backendApi: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND,
 });
-const authApi: AxiosInstance = axios.create({
+let authApi: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND,
   headers: {
-    Authorization: `Bearer ${token}`,
+    Authorization: `Bearer ${Cookies.get("token")}`,
   },
 });
 
@@ -42,6 +41,12 @@ export async function signInApi(user: UserLogin) {
       "/auth/signIn",
       user
     );
+    authApi = axios.create({
+      baseURL: import.meta.env.VITE_BACKEND,
+      headers: {
+        Authorization: `Bearer ${response.data.token}`,
+      },
+    });
     Cookies.set("token", response.data.token, { expires: 10 });
     return response.data;
   } catch (error: any) {
@@ -154,7 +159,7 @@ export async function createGroupApi(name: string) {
 export async function getGroupInfoByChatId(chatId: number) {
   try {
     const response: AxiosResponse<any, any> = await authApi.get(
-      "/chat/group/"+chatId.toString()
+      "/chat/group/" + chatId.toString()
     );
     return response.data;
   } catch (error: any) {
@@ -185,8 +190,8 @@ export async function addMemberByPhone(phone: string, chatId: number) {
 }
 export async function removeMember(userId: number, chatId: number) {
   try {
-    await authApi.post("/chat/remove/" + chatId.toString(),{userId});
-    return
+    await authApi.post("/chat/remove/" + chatId.toString(), { userId });
+    return;
   } catch (error: any) {
     throw error;
   }

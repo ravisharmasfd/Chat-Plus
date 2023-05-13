@@ -36,9 +36,11 @@ export default function AddMember({setMembers,members}:Props) {
         if (activeTab === 'email') {
             const data = await addMemberByEmail(emailValue,selectedChat.chatId);
             setMembers([...members,data])
+            setEmailValue('');
           } else if(activeTab === 'phone'){
             const data = await addMemberByPhone(phoneValue,selectedChat.chatId)
             setMembers([...members,data])
+            setPhoneValue('');
           }
     } catch (error) {
     }

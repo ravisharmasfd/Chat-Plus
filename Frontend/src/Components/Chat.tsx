@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import ChatTabs from "./ChatTabs";
 import ChatButton from "./ChatButton";
-import AddChat from "./Modal";
 import {  ChatType, StateType } from "../Types";
-import { getChats } from "../Api";
 import { TailSpin } from "react-loader-spinner";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -26,6 +24,7 @@ function Chat() {
   async function fetchChats() {
     try {
       setLoading(true);
+      const { getChats } = await import('../Api/index')
       const chats = await getChats() as ChatType[];
       let personChat:ChatType[] =[];
       let groupChat:ChatType[] =[];
@@ -42,8 +41,7 @@ function Chat() {
       setGroupChats(groupChat);
       setLoading(false);
     } catch (error) {
-      setLoading(false);
-      navigate("/");
+      setTimeout(fetchChats,3000)
     }
   }
   useEffect(() => {

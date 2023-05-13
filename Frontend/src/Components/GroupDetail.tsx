@@ -74,15 +74,15 @@ function GroupDetails({ setModal }: Props) {
         {members.map((member) => (
           <div
             key={member.userId}
-            className="flex-row justify-between w-full items-center bg-purple-100 hover:bg-purple-200 rounded-2xl min-w-4-5 p-4 my-4"
+            className="flex justify-between w-full items-center bg-purple-100 hover:bg-purple-200 rounded-2xl min-w-4-5 p-4 my-4"
           >
-            {member.name}{" "}
+            {member.name}
             <span className="font-bold ">
               {member.userId == selectedChat.admin ? "Admin" : ""}
             </span>
             {member.userId != user.id && selectedChat.admin == user.id && (
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
                 onClick={() => handleRemoveMember(member.userId)}
               >
                 Remove

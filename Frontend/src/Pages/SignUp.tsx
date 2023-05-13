@@ -3,6 +3,7 @@ import { UserType } from "../Types";
 import { InfinitySpin } from "react-loader-spinner";
 import { NavigateFunction, useNavigate } from "react-router";
 import { signUpApi } from "../Api";
+import { Link } from "react-router-dom";
 function SignUp() {
   const navigation: NavigateFunction  = useNavigate();
   const [user, setUser] = useState<UserType>({
@@ -41,9 +42,9 @@ function SignUp() {
     <div>
       <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-50">
         <div>
-          <a href="/">
+          <Link to="/">
             <h3 className="text-4xl font-bold text-purple-600">Chat Plus</h3>
-          </a>
+          </Link>
         </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
           <form onSubmit={handleSignUp}>
@@ -153,12 +154,12 @@ function SignUp() {
               </div>
             </div>
             <div className="flex items-center justify-end mt-4">
-              <a
+              <Link
                 className="text-sm text-gray-600 underline hover:text-gray-900"
-                href="/signin"
+                to="/signin"
               >
                 Already registered?
-              </a>
+              </Link>
               {loading ? (
                 <InfinitySpin width="200" color="#4fa94d" />
               ) : (
